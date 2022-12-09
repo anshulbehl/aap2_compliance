@@ -77,14 +77,11 @@
       set_fact:
         profile_list: "{{ profiles.json }}"
 
-    - debug:
-        msg: "{{ profile_list }}"
-
-#    - name: profile_id
-#        set_fact:
-#          profile_id: "{{ profile_list | json_query(get_profile_id) }}"
-#        vars:
-#          get_profile_id: "data[?attributes.name ==  '{{ profile_name }}'].id"
+    - name: profile_id
+        set_fact:
+          profile_id: "{{ profile_list | json_query(get_profile_id) }}"
+        vars:
+          get_profile_id: "data[?attributes.name ==  'Protection Profile for General Purpose Operating Systems'].id"
 
     - name: Get Host List
       uri:
@@ -105,5 +102,65 @@
       set_fact:
         host_data: "{{ host_list.json }}"
 
-    - debug:
-        msg: "{{ host_data }}"
+    - name: print fact
+      debug:
+        var: host_data
+
+
+    - name: set file content fact to std
+      set_fact:
+        file_contents: "{{ item }}"
+      with_file:
+        - "/tmp/std_compliance_hosts"
+      delegate_to: localhost
+
+    - name: print file content fact
+      debug:
+        var: file_contents
+
+    - name: get uuid of host
+      set_fact:
+        uuid: "{{ uuid + [ host_data | json_query(get_uuid)] }}"
+      vars:
+        uuid: []
+        get_uuid: "results[?fqdn == '{{ item }}'].id"
+#      loop: "{{ file_contents | split(',') }}"
+      loop: "{{ file_contents | split('\n') }}"
+#      loop: "{{ file_contents }}"
+      delegate_to: localhost
+
+    - name: print uuid
+      debug:
+        var: uuid
+
+    - name: create lookup file
+      template:
+        src=templates/compliance_host.j2
+        dest=compliance_host.json
+        mode=0644
+      delegate_to: localhost
+    
+    - name: lookup compliance host
+      set_fact:
+        json_file: "{{ lookup('file', 'compliance_host.json') }}"
+    
+    - name: print var
+      debug:
+        var=json_file
+
+    - name: Update Compliance Host List
+      uri:
+        url: "https://console.redhat.com/api/compliance/profiles/{{ profile_id[0] }}"
+        method: PATCH
+#        method: GET
+        headers:
+          Authorization: "Bearer {{ token }}"
+          Content-Type: "application/json"
+          accept: application/json
+        body_format: json
+        body: "{{ lookup('file','compliance_host.json') }}"
+        status_code: 200
+        return_content: yes
+        validate_certs: false
+        force_basic_auth: yes
+      register: new_profile
