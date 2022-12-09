@@ -116,7 +116,7 @@
       set_fact:
         file_contents: "{{ item }}"
       with_file:
-        - "/tmp/std_compliance_hosts"
+        - "/tmp/hipaa_compliance_hosts"
       delegate_to: localhost
 
     - name: print file content fact
