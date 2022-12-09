@@ -32,6 +32,8 @@
   gather_facts: no
   vars_files:
     - secrets_folder/tokens.yml
+  vars:
+    - profile_name: 'Protection Profile for General Purpose Operating Systems'
   tasks:
     - name: get access token
       uri:
@@ -81,8 +83,7 @@
         set_fact:
           profile_id: "{{ profile_list | json_query(get_profile_id) }}"
         vars:
-          get_profile_id: "{{ \"data[?attributes.name == 'Protection Profile for General Purpose Operating Systems'].id\" }}"
-          #get_profile_id: "data[?attributes.name ==  '{{ profile_name }}'].id"
+          get_profile_id: "data[?attributes.name ==  '{{ profile_name }}'].id"
 
     - name: Get Host List
       uri:
