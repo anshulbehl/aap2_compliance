@@ -87,7 +87,7 @@
 
     - name: Get Host List
       uri:
-        url: https://cloud.redhat.com/api/inventory/v1/hosts
+        url: https://cloud.redhat.com/api/inventory/v1/hosts/?per_page=100
         method: GET                                                                                                                                      
         headers:
           Content-Type: "application/json"
@@ -103,10 +103,6 @@
     - name: host_data fact
       set_fact:
         host_data: "{{ host_list.json }}"
-
-    - name: print fact
-      debug:
-        var: host_data
 
 
     - name: set file content fact to std
