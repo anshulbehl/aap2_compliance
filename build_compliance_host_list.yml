@@ -33,10 +33,20 @@
   vars_files:
     - secrets_folder/tokens.yml
   vars:
-#    - profile_name: 'Protection Profile for General Purpose Operating Systems'
-    - profile_name: 'Health Insurance Portability and Accountability Act (HIPAA)'
-#    - profile_name: 'PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 8'
+    - compliance_type: 'label_compliance_type_hipaa'
   tasks:
+    - set_fact:
+        profile_name: 'Protection Profile for General Purpose Operating Systems'
+      when: compliance_type == 'label_compliance_policy_standard'
+
+    - set_fact:
+        profile_name: 'Health Insurance Portability and Accountability Act (HIPAA)'
+      when: compliance_type == 'label_compliance_policy_hipaa'
+
+    - set_fact:
+        profile_name: 'PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 8'
+      when: compliance_type == 'label_compliance_policy_pci'
+      
     - name: get access token
       uri:
         url: "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token"
@@ -112,12 +122,22 @@
         host_data: "{{ host_list.json }}"
 
 
+    - name: set file content fact to hipaa
+      set_fact:
+        file_contents: "{{ item }}"
+      with_file:
+        - "/tmp/hipaa_compliance_hosts"
+      delegate_to: localhost
+      when: compliance_type == 'label_compliance_policy_hipaa'
+
     - name: set file content fact to std
       set_fact:
         file_contents: "{{ item }}"
       with_file:
         - "/tmp/hipaa_compliance_hosts"
       delegate_to: localhost
+      when: compliance_type == 'label_compliance_policy_std'
+
 
     - name: print file content fact
       debug:
