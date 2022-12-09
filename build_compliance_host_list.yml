@@ -29,6 +29,9 @@
         msg: "the value of hippa is {{lookup('ansible.builtin.file', '/tmp/hipaa_compliance_hosts') }}"
 
 
+- name: add host to compliance policies
+  hosts: localhost
+
     - name: get access token
       uri:
         url: "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token"
