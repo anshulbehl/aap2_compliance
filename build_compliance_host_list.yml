@@ -45,10 +45,12 @@
     #        force_basic_auth: True
         validate_certs: False
       register: access_token_reponse
+      delegate_to: localhost
 
     - name: print access token
       set_fact:
         token: "{{ access_token_reponse.json.access_token }}"
+      delegate_to: localhost
 
 
 
@@ -71,4 +73,4 @@
     - name: set profile list
       set_fact:
         profile_list: "{{ profiles.json }}"
-
+      delegate_to: localhost
