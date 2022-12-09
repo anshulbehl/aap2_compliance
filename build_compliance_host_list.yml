@@ -2,6 +2,8 @@
 - name: capture hosts for all compliance policies
   hosts: all
   gather_facts: no
+  vars_files:
+    - secrets_folder/tokens.yml
   tasks:
 
     - name: create standard policy host list
@@ -27,4 +29,5 @@
         msg: "the value of hippa is {{lookup('ansible.builtin.file', '/tmp/hipaa_compliance_hosts') }}"
 
 
-
+    - ansible.builtin.debug:
+        msg: "{{ offline_token }}"
