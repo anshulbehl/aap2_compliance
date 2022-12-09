@@ -1,6 +1,7 @@
 ---
 - name: capture hosts for all compliance policies
   hosts: all
+  gather_facts: no
   tasks:
 
     - name: create standard policy host list
