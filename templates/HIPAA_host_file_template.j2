@@ -1,0 +1,3 @@
+{% for host in groups[ 'label_compliance_policy_hipaa' ] %}
+{{ hostvars[host]['inventory_hostname'] }}.dumont-lab.lan
+{% endfor %}
