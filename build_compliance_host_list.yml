@@ -80,11 +80,11 @@
     - debug:
         msg: "{{ profile_list }}"
 
-    - name: profile_id
-        set_fact:
-          profile_id: "{{ profile_list | json_query(get_profile_id) }}"
-        vars:
-          get_profile_id: "data[?attributes.name ==  '{{ profile_name }}'].id"
+#    - name: profile_id
+#        set_fact:
+#          profile_id: "{{ profile_list | json_query(get_profile_id) }}"
+#        vars:
+#          get_profile_id: "data[?attributes.name ==  '{{ profile_name }}'].id"
 
     - name: Get Host List
       uri:
