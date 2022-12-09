@@ -32,21 +32,23 @@
   gather_facts: no
   vars_files:
     - secrets_folder/tokens.yml
-  vars:
-    - compliance_type: 'label_compliance_type_hipaa'
+#  vars:
+#    - compliance_type: 'label_compliance_type_hipaa'
   tasks:
     - set_fact:
         profile_name: 'Protection Profile for General Purpose Operating Systems'
-      when: compliance_type == 'label_compliance_policy_standard'
+        compliance_type: 'label_compliance_policy_std'
+      when: compliance_type_multi == 'standard'
 
     - set_fact:
         profile_name: 'Health Insurance Portability and Accountability Act (HIPAA)'
-      when: compliance_type == 'label_compliance_policy_hipaa'
+        compliance_type: 'label_compliance_policy_hipaa'
+      when: compliance_type_multi == 'hipaa'
 
     - set_fact:
         profile_name: 'PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 8'
-      when: compliance_type == 'label_compliance_policy_pci'
-      
+        compliance_type: 'label_compliance_policy_pci'
+      when: compliance_type_multi == 'PCI'      
     - name: get access token
       uri:
         url: "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token"
