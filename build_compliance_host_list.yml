@@ -1,9 +1,6 @@
 ---
 - name: capture hosts for all compliance policies
   hosts: all
-  gather_facts: no
-  vars_files:
-    - secrets_folder/tokens.yml
   tasks:
 
     - name: create standard policy host list
@@ -31,7 +28,10 @@
 
 - name: add host to compliance policies
   hosts: localhost
-
+  gather_facts: no
+  vars_files:
+    - secrets_folder/tokens.yml
+  tasks:
     - name: get access token
       uri:
         url: "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token"
