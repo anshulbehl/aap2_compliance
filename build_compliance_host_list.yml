@@ -49,12 +49,10 @@
     #        force_basic_auth: True
         validate_certs: False
       register: access_token_reponse
-      delegate_to: localhost
 
     - name: print access token
       set_fact:
         token: "{{ access_token_reponse.json.access_token }}"
-      delegate_to: localhost
 
     - ansible.builtin.debug:
         msg: "{{ token }}"
@@ -74,9 +72,35 @@
         validate_certs: false
         force_basic_auth: yes
       register: profiles
-      delegate_to: localhost
 
     - name: set profile list
       set_fact:
         profile_list: "{{ profiles.json }}"
-      delegate_to: localhost
+
+    - name: profile_id
+        set_fact:
+          profile_id: "{{ profile_list | json_query(get_profile_id) }}"
+        vars:
+          get_profile_id: "data[?attributes.name ==  '{{ profile_name }}'].id"
+
+    - name: Get Host List
+      uri:
+        url: https://cloud.redhat.com/api/inventory/v1/hosts
+        method: GET                                                                                                                                      
+        headers:
+          Content-Type: "application/json"
+          accept: application/json
+          Authorization: "Bearer {{ token }}"
+        body_format: form-urlencoded
+        status_code: 200
+        validate_certs: false
+        force_basic_auth: yes
+        return_content: yes
+      register: host_list
+
+    - name: host_data fact
+      set_fact:
+        host_data: "{{ host_list.json }}"
+
+    - debug:
+        msg: "{{ host_data }}"
