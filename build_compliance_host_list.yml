@@ -20,11 +20,11 @@
 
     - name: standard hosts
       ansible.builtin.debug:
-        msg: "the value of standard is {{lookup('ansible.builtin.file', '/home/runner/files/std_compliance_hosts') }}"
+        msg: "the value of standard is {{lookup('ansible.builtin.file', '/tmp/std_compliance_hosts') }}"
 
 
     - ansible.builtin.debug:
-        msg: "the value of hippa is {{lookup('ansible.builtin.file', '/home/runner/files/hipaa_compliance_hosts') }}"
+        msg: "the value of hippa is {{lookup('ansible.builtin.file', '/tmp/hipaa_compliance_hosts') }}"
 
 
 
