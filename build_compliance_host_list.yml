@@ -17,6 +17,12 @@
         dest: /tmp/hipaa_compliance_hosts
       delegate_to: localhost
 
+    - name: create PCI policy host list
+      template:
+        src: templates/PCI_host_file_template.j2
+        dest: /tmp/pci_compliance_hosts
+      delegate_to: localhost
+
 
     - name: standard hosts
       ansible.builtin.debug:
@@ -136,9 +142,19 @@
       set_fact:
         file_contents: "{{ item }}"
       with_file:
-        - "/tmp/hipaa_compliance_hosts"
+        - "/tmp/std_compliance_hosts"
       delegate_to: localhost
       when: compliance_type == 'label_compliance_policy_std'
+
+
+    - name: set file content fact to pci
+      set_fact:
+        file_contents: "{{ item }}"
+      with_file:
+        - "/tmp/pci_compliance_hosts"
+      delegate_to: localhost
+      when: compliance_type == 'label_compliance_policy_pci'
+
 
 
     - name: print file content fact
