@@ -84,6 +84,11 @@
         profile_id: "{{ profile_list | json_query(get_profile_id) }}"
       vars:
         get_profile_id: "data[?attributes.name ==  '{{ profile_name }}'].id"
+    
+    - name: Debug Profile ID
+      debug:
+        msg: "{{ profile_id}}"
+
 
     - name: Get Host List
       uri:
