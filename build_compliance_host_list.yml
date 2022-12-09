@@ -80,10 +80,10 @@
         profile_list: "{{ profiles.json }}"
 
     - name: profile_id
-        set_fact:
-          profile_id: "{{ profile_list | json_query(get_profile_id) }}"
-        vars:
-          get_profile_id: "data[?attributes.name ==  '{{ profile_name }}'].id"
+      set_fact:
+        profile_id: "{{ profile_list | json_query(get_profile_id) }}"
+      vars:
+        get_profile_id: "data[?attributes.name ==  '{{ profile_name }}'].id"
 
     - name: Get Host List
       uri:
