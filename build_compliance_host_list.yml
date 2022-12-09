@@ -77,6 +77,9 @@
       set_fact:
         profile_list: "{{ profiles.json }}"
 
+    - debug:
+        msg: "{{ profile_list }}"
+
     - name: profile_id
         set_fact:
           profile_id: "{{ profile_list | json_query(get_profile_id) }}"
