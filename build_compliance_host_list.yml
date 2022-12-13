@@ -49,7 +49,7 @@
   tasks:
     - set_fact:
         profile_name: 'Protection Profile for General Purpose Operating Systems'
-        compliance_type: 'label_compliance_policy_std'
+        compliance_type: 'label_compliance_policy_standard'
       when: compliance_type_multi == 'Standard'
 
     - set_fact:
@@ -161,7 +161,7 @@
       with_file:
         - "/tmp/std_compliance_hosts"
       delegate_to: localhost
-      when: compliance_type == 'label_compliance_policy_std'
+      when: compliance_type == 'label_compliance_policy_standard'
 
 
     - name: set file content fact to pci
