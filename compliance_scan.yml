@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: "{{ compliance_type }}"
   become: true
   vars:
     compliance_profile_configured: yes
