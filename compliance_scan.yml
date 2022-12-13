@@ -3,7 +3,7 @@
   become: true
   vars:
     #compliance_profile: undef
-    compliance_profile_configured: Yes
+    compliance_profile_configured: "Yes"
 
   tasks:
     - name: Check OS Type
