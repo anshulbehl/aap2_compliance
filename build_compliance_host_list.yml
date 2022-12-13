@@ -26,7 +26,7 @@
     - name: create DISA policy host list
       template:
         src: templates/DISA_host_file_template.j2
-        dest: /tmp/disa_compliance_hosts
+        dest: /tmp/stig_compliance_hosts
       delegate_to: localhost
 
 
