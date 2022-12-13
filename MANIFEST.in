@@ -1,0 +1,7 @@
+recursive-exclude .git *
+exclude *.md
+recursive-include secrets_folder *
+recursive-include templates *
+recursive-include roles *
+include *.yml
+
