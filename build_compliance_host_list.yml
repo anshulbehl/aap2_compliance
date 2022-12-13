@@ -231,3 +231,7 @@
         validate_certs: false
         force_basic_auth: yes
       register: new_profile
+
+    - ansible.builtin.set_stats:
+        data:
+          compliance_type: {{ compliance_type }}
