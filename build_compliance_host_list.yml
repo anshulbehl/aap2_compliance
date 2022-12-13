@@ -135,25 +135,11 @@
         validate_certs: false
         force_basic_auth: yes
         return_content: yes
-      register: host_list1
+      register: host_list
 
-    - name: Get Host List
-      uri:
-        url: https://cloud.redhat.com/api/inventory/v1/hosts?per_page=100&page=2
-        method: GET                                                                                                                                      
-        headers:
-          Content-Type: "application/json"
-          accept: application/json
-          Authorization: "Bearer {{ token }}"
-        body_format: form-urlencoded
-        status_code: 200
-        validate_certs: false
-        force_basic_auth: yes
-        return_content: yes
-      register: host_list2
 
-    - set_fact:
-        host_list: "{{ host_list1.results | host_list1.results }}"
+ #   - set_fact:
+ #       host_list: "{{ host_list1.results | host_list1.results }}"
 
 
     - name: host_data fact
