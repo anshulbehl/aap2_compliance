@@ -189,7 +189,8 @@
         uuid: "{{ uuid + [ host_data | json_query(get_uuid)] }}"
       vars:
         uuid: []
-        get_uuid: "results[?fqdn == '{{ item }}'].id"
+#        get_uuid: "results[?fqdn == '{{ item }}'].id"
+        get_uuid: "results[?ip_addresses[0] == '{{ item }}'].id"
 #      loop: "{{ file_contents | split(',') }}"
       loop: "{{ file_contents | split('\n') }}"
 #      loop: "{{ file_contents }}"
