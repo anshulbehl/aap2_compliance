@@ -234,4 +234,4 @@
 
     - ansible.builtin.set_stats:
         data:
-          compliance_type: {{ compliance_type }}
+          compliance_type: "{{ compliance_type }}"
