@@ -1,13 +1,17 @@
 ---
-- hosts: "{{ compliance_type }}"
+- hosts: "compliance_type"
   become: true
   vars:
-    compliance_profile_configured: Yes
+    #compliance_profile: undef
 
   tasks:
     - name: Check OS Type
       assert:
         that: "ansible_os_family == 'RedHat'"
+
+    - name: Check variable values
+      debug:
+        msg: "Value of compliance_profile_configured is {{ compliance_profile_configured }}"
 
     - name: Run Insights Compliance scan
       import_role:
