@@ -2,7 +2,7 @@
 - hosts: "{{ compliance_type }}"
   become: true
   vars:
-    compliance_profile_configured: yes
+    compliance_profile_configured: Yes
 
   tasks:
     - name: Check OS Type
