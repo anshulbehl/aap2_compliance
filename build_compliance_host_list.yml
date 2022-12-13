@@ -153,7 +153,7 @@
       register: host_list2
 
     - set_fact:
-        host_list: {{ host_list1 + host_list2 }}
+        host_list: "{{ host_list1 + host_list2 }}"
 
 
     - name: host_data fact
