@@ -23,14 +23,20 @@
         dest: /tmp/pci_compliance_hosts
       delegate_to: localhost
 
+    - name: create DISA policy host list
+      template:
+        src: templates/DISA_host_file_template.j2
+        dest: /tmp/disa_compliance_hosts
+      delegate_to: localhost
 
-    - name: standard hosts
-      ansible.builtin.debug:
-        msg: "the value of standard is {{lookup('ansible.builtin.file', '/tmp/std_compliance_hosts') }}"
+
+#    - name: standard hosts
+#      ansible.builtin.debug:
+#        msg: "the value of standard is {{lookup('ansible.builtin.file', '/tmp/std_compliance_hosts') }}"
 
 
-    - ansible.builtin.debug:
-        msg: "the value of hippa is {{lookup('ansible.builtin.file', '/tmp/hipaa_compliance_hosts') }}"
+#    - ansible.builtin.debug:
+#        msg: "the value of hippa is {{lookup('ansible.builtin.file', '/tmp/hipaa_compliance_hosts') }}"
 
 
 - name: add host to compliance policies
@@ -44,17 +50,23 @@
     - set_fact:
         profile_name: 'Protection Profile for General Purpose Operating Systems'
         compliance_type: 'label_compliance_policy_std'
-      when: compliance_type_multi == 'standard'
+      when: compliance_type_multi == 'Standard'
 
     - set_fact:
         profile_name: 'Health Insurance Portability and Accountability Act (HIPAA)'
         compliance_type: 'label_compliance_policy_hipaa'
-      when: compliance_type_multi == 'hipaa'
+      when: compliance_type_multi == 'HIPAA'
 
     - set_fact:
         profile_name: 'PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 8'
         compliance_type: 'label_compliance_policy_pci'
       when: compliance_type_multi == 'PCI'      
+
+    - set_fact:
+        profile_name: 'DISA STIG with GUI for Red Hat Enterprise Linux 8'
+        compliance_type: 'label_compliance_policy_disa_stig'
+      when: compliance_type_multi == 'DISA_STIG'      
+
     - name: get access token
       uri:
         url: "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token"
@@ -155,7 +167,13 @@
       delegate_to: localhost
       when: compliance_type == 'label_compliance_policy_pci'
 
-
+    - name: set file content fact to disa_stig
+      set_fact:
+        file_contents: "{{ item }}"
+      with_file:
+        - "/tmp/stig_compliance_hosts"
+      delegate_to: localhost
+      when: compliance_type == 'label_compliance_policy_disa_stig'
 
     - name: print file content fact
       debug:
