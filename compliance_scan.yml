@@ -1,6 +1,7 @@
 ---
 - hosts: "{{ compliance_type }}"
   become: true
+  gather_facts: true
   vars:
     #compliance_profile: undef
     compliance_profile_configured: "Yes"
