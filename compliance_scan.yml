@@ -2,11 +2,17 @@
 - hosts: "{{ compliance_type }}"
   become: true
   gather_facts: true
+  collections:
+    - redhatinsights.insights
   vars:
     #compliance_profile: undef
     compliance_profile_configured: "Yes"
 
   tasks:
+    - include_role: 
+        name: insights_client
+      when: ansible_os_family == 'RedHat'
+      
     - name: Check OS Type
       assert:
         that: "ansible_os_family == 'RedHat'"
