@@ -4,4 +4,3 @@ roles:
     version: 0.1.61
   - name: redhatofficial.rhel8_stig
     version: 0.1.60
-  - name: redhatinsights.insights
