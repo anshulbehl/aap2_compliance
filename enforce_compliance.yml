@@ -42,8 +42,8 @@
 - name: add host to compliance policies
   hosts: localhost
   gather_facts: no
-  vars_files:
-    - secrets_folder/tokens.yml
+#  vars_files:
+#    - secrets_folder/tokens.yml
 #  vars:
 #    - compliance_type: 'label_compliance_type_hipaa'
   tasks:
