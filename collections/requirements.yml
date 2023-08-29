@@ -1,2 +1,3 @@
 ---
-- name: redhatinsights.insights
+collections:
+  - name: redhatinsights.insights
